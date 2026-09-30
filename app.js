@@ -13,7 +13,11 @@ const scholar = id => data.scholars.find(s => s.id === id);
 const displayDate = value => new Date(value).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
 
 function toast(message) { const t=$('#toast'); t.textContent=message; t.classList.add('show-toast'); setTimeout(()=>t.classList.remove('show-toast'),2800); }
-function error(message) { toast(message || 'Something went wrong. Please try again.'); }
+function error(message) {
+  const loginError = $('#loginError');
+  if (loginError && !$('#loginScreen').hidden) loginError.textContent = message || 'Something went wrong. Please try again.';
+  else toast(message || 'Something went wrong. Please try again.');
+}
 function openModal(html) { $('#modalContent').innerHTML=html; $('#modalBackdrop').classList.add('open'); }
 function closeModal() { $('#modalBackdrop').classList.remove('open'); }
 
@@ -103,10 +107,12 @@ function showLogin() {
   $('#appShell').hidden = true;
   $('#loginScreen').hidden = false;
   $('#loginForm').reset();
+  $('#loginError').textContent = '';
 }
 $('#loginForm').onsubmit = async event => {
   event.preventDefault();
   const form = new FormData(event.target), button = $('#loginButton');
+  $('#loginError').textContent = '';
   button.disabled = true; button.textContent = 'Signing in...';
   const { data: authData, error: authError } = await db.auth.signInWithPassword({
     email: form.get('email'), password: form.get('password')
