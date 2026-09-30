@@ -10,6 +10,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <section class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-mark">S</div>
+      <p class="eyebrow">SCHOLARSHIP OFFICE</p>
+      <h1>Welcome back</h1>
+      <p class="login-copy">Sign in to manage scholar records and academic compliance.</p>
+      <form id="loginForm" class="login-form">
+        <label>Email address<input type="email" name="email" required placeholder="staff@university.edu" /></label>
+        <label>Password<input type="password" name="password" required placeholder="Enter your password" /></label>
+        <button class="btn btn-primary" id="loginButton">Sign in</button>
+      </form>
+      <p class="login-help">Only authorized Scholarship Office staff may access this system.</p>
+    </div>
+  </section>
+  <div id="appShell" hidden>
   <aside class="sidebar">
     <div class="brand"><span class="brand-mark">S</span><span>Scholar<span>Track</span></span></div>
     <p class="office-label">Scholarship Office</p>
@@ -20,7 +35,7 @@
       <button class="nav-link" data-view="compliance"><span>✓</span> Compliance</button>
       <button class="nav-link" data-view="reports"><span>▥</span> Reports</button>
     </nav>
-    <div class="sidebar-bottom"><div class="user-avatar">SS</div><div><strong>Scholarship Staff</strong><small>staff@university.edu</small></div></div>
+    <div class="sidebar-bottom"><div class="user-avatar">SS</div><div><strong>Scholarship Staff</strong><small id="signedInEmail">staff@university.edu</small></div><button class="logout-btn" id="logoutButton" title="Logout">↪</button></div>
   </aside>
 
   <main>
@@ -65,6 +80,7 @@
     <div class="modal" id="modal"><button class="close-modal" id="closeModal">×</button><div id="modalContent"></div></div>
   </div>
   <div id="toast"></div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>

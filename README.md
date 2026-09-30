@@ -13,6 +13,12 @@
 3. The database will have `scholarship_programs`, `scholars`, and `grade_submissions` tables.
 4. When your teacher requires online saving, create a Supabase project URL and anon key. The next implementation step is connecting those credentials to `app.js`.
 
+## Create the staff login and secure database
+
+1. In Supabase, open **Authentication > Users > Add user** and create a staff email/password account.
+2. Open **SQL Editor**, paste and run `security.sql`.
+3. Refresh the website and sign in with the staff account.
+
 ## Implemented workflow
 
 Register Scholar → Add Grade Submission → Verify Submission → Evaluate Compliance → View Report

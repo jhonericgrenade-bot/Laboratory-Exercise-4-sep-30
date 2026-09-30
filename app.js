@@ -92,4 +92,31 @@ document.addEventListener('click', e=>{
   const action=e.target.closest('[data-action]')?.dataset.action;if(action==='register')registerModal();if(action==='submission')submissionModal();if(action==='verify')$('[data-view="submissions"]').click();if(action==='report')$('[data-view="reports"]').click();if(e.target.dataset.go)$(`[data-view="${e.target.dataset.go}"]`).click();if(e.target.dataset.verify)verifyModal(e.target.dataset.verify);if(e.target.dataset.evaluate)evaluate(e.target.dataset.evaluate);if(e.target.dataset.profile)profile(e.target.dataset.profile);if(e.target.id==='closeModal'||e.target.id==='cancelModal')closeModal();if(e.target.id==='printReport')window.print();
 });
 $('#quickAction').onclick=registerModal;$('#scholarSearch').oninput=renderScholars;$('#statusFilter').onchange=renderScholars;$('#submissionFilter').onchange=renderSubmissions;$('#modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal();};
-loadData();
+
+async function showApp(session) {
+  $('#loginScreen').hidden = true;
+  $('#appShell').hidden = false;
+  $('#signedInEmail').textContent = session.user.email;
+  await loadData();
+}
+function showLogin() {
+  $('#appShell').hidden = true;
+  $('#loginScreen').hidden = false;
+  $('#loginForm').reset();
+}
+$('#loginForm').onsubmit = async event => {
+  event.preventDefault();
+  const form = new FormData(event.target), button = $('#loginButton');
+  button.disabled = true; button.textContent = 'Signing in...';
+  const { data: authData, error: authError } = await db.auth.signInWithPassword({
+    email: form.get('email'), password: form.get('password')
+  });
+  button.disabled = false; button.textContent = 'Sign in';
+  if (authError) return error(authError.message);
+  showApp(authData.session);
+};
+$('#logoutButton').onclick = async () => { await db.auth.signOut(); showLogin(); toast('You have been signed out.'); };
+(async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) showApp(session); else showLogin();
+})();
